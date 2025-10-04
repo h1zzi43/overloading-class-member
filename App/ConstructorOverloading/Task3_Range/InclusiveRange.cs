@@ -5,24 +5,39 @@ namespace App.ConstructorOverloading.Task3_Range;
 
 public class InclusiveRange
 {
-    public int Start { get; private set; }
-    public int End { get; private set; }
+    public int Start { get; }
+    public int End { get; }
 
-    // Конструктор (start, end)
     public InclusiveRange(int start, int end)
     {
-        throw new NotImplementedException();
+        if (start > end)
+            throw new ArgumentOutOfRangeException(nameof(start), "Start cannot be greater than end");
+
+        Start = start;
+        End = end;
     }
 
-    // Конструктор из строки "start..end"
-    public InclusiveRange(string s)
+    public InclusiveRange(int single) : this(single, single)
     {
-        throw new NotImplementedException();
     }
 
-    // Конструктор из одного числа
-    public InclusiveRange(int single)
+    public InclusiveRange(string range)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(range))
+            throw new FormatException("Range string cannot be null or empty");
+
+        string[] parts = range.Split(new[] { ".." }, StringSplitOptions.None);
+
+        if (parts.Length != 2)
+            throw new FormatException("Invalid range format. Expected 'start..end'");
+
+        if (!int.TryParse(parts[0], out int start) || !int.TryParse(parts[1], out int end))
+            throw new FormatException("Start and end must be valid integers");
+
+        if (start > end)
+            throw new ArgumentOutOfRangeException(nameof(start), "Start cannot be greater than end");
+
+        Start = start;
+        End = end;
     }
 }
