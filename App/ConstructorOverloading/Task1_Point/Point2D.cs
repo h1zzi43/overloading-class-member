@@ -1,35 +1,59 @@
 // Задача: Перегрузка конструкторов — Point2D
 // Реализуйте класс Point2D с несколькими конструкторами согласно README.
 
+using System.Text.RegularExpressions;
+
 namespace App.ConstructorOverloading.Task1_Point;
 
 public class Point2D
 {
-    // Координаты точки. Сделаны только для чтения снаружи.
-    public int X { get; private set; }
-    public int Y { get; private set; }
+    private int x;
+    private int y;
 
-    // Конструктор по умолчанию: (0,0)
     public Point2D()
     {
-        throw new NotImplementedException();
+        x = 0;
+        y = 0;
     }
 
-    // Конструктор координат
     public Point2D(int x, int y)
     {
-        throw new NotImplementedException();
+        this.x = x;
+        this.y = y;
     }
 
-    // Конструктор из строки "x;y" (пробелы допустимы)
-    public Point2D(string s)
+    public Point2D(string str)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(str))
+            throw new FormatException("Invalid string format");
+
+        var match = Regex.Match(str.Trim(), @"^\s*(-?\d+)\s*;\s*(-?\d+)\s*$");
+
+        if (!match.Success)
+            throw new FormatException("Invalid string format");
+
+        x = int.Parse(match.Groups[1].Value);
+        y = int.Parse(match.Groups[2].Value);
     }
 
-    // Конструктор копирования
     public Point2D(Point2D other)
     {
-        throw new NotImplementedException();
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        x = other.x;
+        y = other.y;
+    }
+
+    public int X
+    {
+        get => x;
+        set => x = value;
+    }
+
+    public int Y
+    {
+        get => y;
+        set => y = value;
     }
 }
