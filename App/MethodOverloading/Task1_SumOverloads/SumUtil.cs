@@ -15,7 +15,7 @@ public static class SumUtil
     // Складывает три int
     public static int Sum(int a, int b, int c)
     {
-        return  a + b + c;
+        return a + b + c;
     }
 
     // Складывает произвольное количество значений
